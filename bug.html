@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug WhatsApp</title>
+    <style>
+        body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+        input, select, button { width:100%; padding:15px; margin:10px 0; border:2px solid #0f0; background:#111; color:#0f0; }
+        button { background:#f00; color:#fff; font-weight:bold; }
+        .log { background:#111; padding:15px; margin-top:20px; font-size:14px; }
+    </style>
+</head>
+<body>
+    <h2>BUG WHATSAPP (VERSI LAMA)</h2>
+    <input type="text" id="target" placeholder="+628xxx">
+    <select id="bugType">
+        <option value="crash">Crash Unicode</option>
+        <option value="flood">Flood Notification</option>
+    </select>
+    <button onclick="sendBug()">KIRIM BUG</button>
+    <div class="log" id="log">[Log]</div>
+    
+    <script>
+        async function sendBug() {
+            const target = document.getElementById('target').value;
+            const bugType = document.getElementById('bugType').value;
+            
+            document.getElementById('log').innerHTML += '<br>Mengirim bug...';
+            
+            const res = await fetch(`/sendbug?target=${target}&type=${bugType}`);
+            const data = await res.json();
+            
+            if(data.success) {
+                document.getElementById('log').innerHTML += '<br>SUKSES: ' + data.message;
+            } else {
+                document.getElementById('log').innerHTML += '<br>GAGAL: ' + data.error;
+            }
+        }
+    </script>
+</body>
+</html>
